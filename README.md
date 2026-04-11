@@ -9,6 +9,7 @@ O **EcoCity** é um projeto em desenvolvimento pensado para otimizar a logístic
 
 ### 🧠 Conceitos Aplicados
 Este projeto faz parte do meu plano de estudos intensivo em Backend Java, onde aplico:
+- **Abstração e Modelagem de Domínio:** Transformando problemas reais (poluição e descarte) em classes e objetos.
 - **Encapsulamento:** Proteção de dados sensíveis e regras de negócio através de modificadores de acesso (`private`) e métodos acessores.
 - **Lógica de Negócio Customizada:** Cálculo dinâmico de pontuação baseado no tipo de material e risco ambiental.
 

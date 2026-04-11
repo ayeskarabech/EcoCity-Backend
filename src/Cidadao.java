@@ -1,14 +1,21 @@
 package src;
+
+import java.util.ArrayList;
+
+
 public class Cidadao {
     // 1. Atributos Privados (Encapsulamento!)
     private String nome;
     private String cpf;
     private int saldoPontos;
 
+    private ArrayList<Material> historicoDescarte;
+
     // 2. Construtor para inicializar os atributos
     public Cidadao(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
+        this.historicoDescarte = new ArrayList<>();
         this.saldoPontos = 0;
     }
 
@@ -16,7 +23,8 @@ public class Cidadao {
     public void realizarDescarte(Material m) {
         double basePontos = m.calcularPontos();
         this.saldoPontos += (int) basePontos; 
-        System.out.println("\nDescarte do cidadao " + this.nome + " realizado! +" + basePontos + " pontos.\n");
+        this.historicoDescarte.add(m);
+        System.out.println("\nDescarte do cidadao " + this.nome + " realizado e salvo no histórico! +" + basePontos + " pontos.\n");
     }
 
     // 4. Método para ganhar pontos
@@ -41,5 +49,9 @@ public class Cidadao {
 
     public String getCpf() {
         return cpf;
+    }
+
+    public ArrayList<Material> getHistoricoDescarte() {
+        return historicoDescarte;
     }
 }
