@@ -1,4 +1,6 @@
-package src;
+package src.model.materiais;
+
+import src.model.Material;
 
 public class MaterialToxico extends Material {
 
@@ -7,8 +9,7 @@ public class MaterialToxico extends Material {
     }
     
     @Override
-    public double calcularPontos() {
-        double pontosBase = this.getPeso() * 10; 
+    public double calcularPontos() { 
         return (getPeso() * 10) * 3; // materiais tóxicos valem o triplo dos pontos base, para incentivar a reciclagem correta e evitar descarte inadequado
     }
     

@@ -1,4 +1,6 @@
-package src;
+package src.model.materiais;
+
+import src.model.Material;
 
 public class MaterialPlastico extends Material {
 

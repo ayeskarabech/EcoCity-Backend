@@ -1,8 +1,11 @@
 package src;
 
 import java.util.Scanner;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
+import java.util.ArrayList;
+import src.model.*;
+import src.model.materiais.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -24,8 +27,13 @@ public class Main {
             System.out.println("0. Sair");
             System.out.print("Escolha uma opção: ");
             
-            opcao = leitor.nextInt();
-            leitor.nextLine();
+            try {
+                opcao = leitor.nextInt();
+            } catch (InputMismatchException e) {
+                System.out.println("Erro: Digite apenas números inteiros!");
+                leitor.nextLine(); 
+                continue;
+            }
 
             switch (opcao) {
                 case 1:
@@ -79,8 +87,8 @@ public class Main {
                         System.out.println("Por favor, cadastre-se primeiro na opção 1 do menu.");
                     } else {
                         System.out.println("\n----- EXTRATO DE PONTOS -----");
-                        System.out.println("\n- Cidadao: " + cidadao1.getNome());
-
+                        System.out.println("\n- Cidadão: " + cidadao1.getNome());
+                        
                         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
                         for (Material m : cidadao1.getHistoricoDescarte()) {

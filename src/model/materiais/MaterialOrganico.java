@@ -1,4 +1,6 @@
-package src;
+package src.model.materiais;
+
+import src.model.Material;
 
 public class MaterialOrganico extends Material {
 
@@ -8,7 +10,6 @@ public class MaterialOrganico extends Material {
     
     @Override
     public double calcularPontos() {
-        double pontosBase = this.getPeso() * 10; 
         return (getPeso() * 10) * 2; // materiais orgânicos valem o dobro dos pontos base
     }
 }

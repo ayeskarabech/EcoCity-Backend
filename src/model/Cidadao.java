@@ -1,7 +1,6 @@
-package src;
+package src.model;
 
 import java.util.ArrayList;
-
 
 public class Cidadao {
     // 1. Atributos Privados (Encapsulamento!)
@@ -15,15 +14,15 @@ public class Cidadao {
     public Cidadao(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
-        this.historicoDescarte = new ArrayList<>();
         this.saldoPontos = 0;
+        this.historicoDescarte = new ArrayList<>();
     }
 
     // 3. Método para realizar o descarte e ganhar pontos
     public void realizarDescarte(Material m) {
         double basePontos = m.calcularPontos();
         this.saldoPontos += (int) basePontos; 
-        this.historicoDescarte.add(m);
+        this.historicoDescarte.add(m); // adiciona o material ao histórico de descarte do cidadão para desenvolver um extrato de atividades e incentivar a participação contínua no programa de reciclagem.
         System.out.println("\nDescarte do cidadao " + this.nome + " realizado e salvo no histórico! +" + basePontos + " pontos.\n");
     }
 
