@@ -9,7 +9,7 @@ import src.model.materiais.*;
 import java.io.*;
 
 public class Main {
-    // Métodos auxiliares para leitura de dados com tratamento de exceções:
+    // Métodos auxiliares para leitura de dados com tratamento de exceções (MODULARIZAÇÃO E REUSABILIDADE):
     public static int lerInteiro(Scanner leitor, String mensagem) {
         while (true) {
             try {
@@ -38,11 +38,14 @@ public class Main {
     public static void salvarDados(Cidadao c){
         try (PrintWriter gravar = new PrintWriter(new FileWriter("dados_ecocity.txt"))) {
             gravar.println(c.getNome() + ";" + c.getCpf() + ";" + c.getSaldoPontos());
-            
-            for (Material m : c.getHistoricoDescarte()) {
+
+
+
+            for (Material m : c.getHistoricoDescarte()) { // Salva cada material descartado no formato: nome;peso;toxidade;dataHora
                 gravar.println(m.getNome() + ";" + m.getPeso() + ";" + m.isToxico() + ";" + m.getDataHora());
             }
             System.out.println("Dados do cidadão salvos com sucesso!");
+            
         } catch (IOException e) {
             System.out.println("Erro ao salvar os dados: " + e.getMessage());
         }
@@ -56,7 +59,6 @@ public class Main {
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha = br.readLine(); // Lê a primeira linha do arquivo
-
             if (linha == null) return null;
             // A primeira linha contém os dados do cidadão: nome;cpf;pontos
             String[] partes = linha.split(";");
@@ -66,11 +68,28 @@ public class Main {
             while ((linha = br.readLine()) != null) {
                 String[] m = linha.split(";");
 
-                Material mat = new Material(m[0], Double.parseDouble(m[1]), Boolean.parseBoolean(m[2]));
-                c.getHistoricoDescarte().add(mat); // Adiciona o material ao histórico do cidadão .txt
+                Material mat = null;
+                String nomeMaterial = m[0];
+                double peso = Double.parseDouble(m[1]);
+                boolean toxico = Boolean.parseBoolean(m[2]);
+                
+                switch (nomeMaterial.trim().toUpperCase()) { // .trim() para evitar problemas com espaços em branco e .toUpperCase() para padronizar o tamanho da letra
+                    case "Papel": mat = new MaterialPapel(peso); break;
+                    case "Plástico": mat = new MaterialPlastico(peso); break;
+                    case "Vidro": mat = new MaterialVidro(peso); break;
+                    case "Orgânico": mat = new MaterialOrganico(peso); break;
+                    case "Tóxico": mat = new MaterialToxico(peso); break;
+                    default:
+                        mat = new Material(nomeMaterial, peso, toxico); // Caso seja um material desconhecido, cria um material genérico
+                        break;
+                }
+                if (mat != null) {
+                    c.getHistoricoDescarte().add(mat); // Adiciona o material ao histórico do cidadão .txt
+                }              
             }
             return c;
-        } catch (Exception e) { //NumberFormatException para tratar erros de conversão de pontos
+
+        } catch (Exception e) {
             System.out.println("Erro ao carregar os dados: " + e.getMessage());
             return null;
         }
@@ -155,7 +174,8 @@ public class Main {
                 case 3:
                     if(cidadao1 == null) {
                         System.out.println("Por favor, cadastre-se primeiro na opção 1 do menu.");
-                    } else {
+                    } 
+                    else {
                         System.out.println("\n----- EXTRATO DE PONTOS -----");
                         System.out.println("\n- Cidadão: " + cidadao1.getNome());
                         

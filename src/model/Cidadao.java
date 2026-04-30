@@ -3,14 +3,14 @@ package src.model;
 import java.util.ArrayList;
 
 public class Cidadao {
-    // 1. Atributos Privados (Encapsulamento!)
+    // Atributos Privados ENCAPSULADOS
     private String nome;
     private String cpf;
     private int saldoPontos;
 
     private ArrayList<Material> historicoDescarte;
 
-    // 2. Construtor para inicializar os atributos
+    // Construtor
     public Cidadao(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
@@ -18,7 +18,7 @@ public class Cidadao {
         this.historicoDescarte = new ArrayList<>();
     }
 
-    // 3. Método para realizar o descarte e ganhar pontos
+    // Realizar o descarte e ganhar pontos
     public void realizarDescarte(Material m) {
         double basePontos = m.calcularPontos();
         this.saldoPontos += (int) basePontos; 
@@ -26,7 +26,7 @@ public class Cidadao {
         System.out.println("\nDescarte do cidadao " + this.nome + " realizado e salvo no histórico! +" + basePontos + " pontos.\n");
     }
 
-    // 4. Método para ganhar pontos
+    // Ganhar pontos
     public void adicionarPontos(int quantidade) {
         if (quantidade > 0) {
             this.saldoPontos += quantidade;
@@ -36,18 +36,17 @@ public class Cidadao {
         }
     }
 
-    // 5. Método para ver o saldo (Getter)
-    public int getSaldoPontos() {
-        return this.saldoPontos;
-    }
-
-    // Getters e Setters para nome e cpf (Encapsulamento)
+    // Getters e Setters PARA ENCAPSULAMENTO
     public String getNome() {  
         return nome;
     }
 
     public String getCpf() {
         return cpf;
+    }
+
+    public int getSaldoPontos() {
+        return this.saldoPontos;
     }
 
     public ArrayList<Material> getHistoricoDescarte() {
