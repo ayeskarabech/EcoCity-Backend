@@ -4,7 +4,7 @@ import src.model.Material;
 
 public class MaterialPapel extends Material {
 
-    public MaterialPapel(double peso) {
+    public MaterialPapel(double peso, boolean toxico) {
         super("Papel", peso, false);
     }
     

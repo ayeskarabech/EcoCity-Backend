@@ -4,8 +4,8 @@ import src.model.Material;
 
 public class MaterialVidro extends Material {
 
-    public MaterialVidro(double peso) {
-        super("Vidro", peso, false);
+    public MaterialVidro(double peso, boolean toxico) {
+        super("Vidro", peso, toxico);
     }
     
     @Override

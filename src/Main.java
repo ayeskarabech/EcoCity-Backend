@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException; // Tratamento de exceções de entrada
 import src.model.*;
+import src.model.exceptions.TipoMaterialInvalidoException;
 import src.model.materiais.*;
 import java.io.*;
 
@@ -57,12 +58,14 @@ public class Main {
 
         if (!arquivo.exists()) return null;
 
+        Cidadao c = null;
+
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             String linha = br.readLine(); // Lê a primeira linha do arquivo
             if (linha == null) return null;
             // A primeira linha contém os dados do cidadão: nome;cpf;pontos
             String[] partes = linha.split(";");
-            Cidadao c = new Cidadao(partes[0], partes[1]);
+            c = new Cidadao(partes[0], partes[1]);
             c.adicionarPontos(Integer.parseInt(partes[2]));
             // Lê o restante das linhas para reconstruir o histórico de descarte
             while ((linha = br.readLine()) != null) {
@@ -74,14 +77,13 @@ public class Main {
                 boolean toxico = Boolean.parseBoolean(m[2]);
                 
                 switch (nomeMaterial.trim().toUpperCase()) { // .trim() para evitar problemas com espaços em branco e .toUpperCase() para padronizar o tamanho da letra
-                    case "Papel": mat = new MaterialPapel(peso); break;
-                    case "Plástico": mat = new MaterialPlastico(peso); break;
-                    case "Vidro": mat = new MaterialVidro(peso); break;
-                    case "Orgânico": mat = new MaterialOrganico(peso); break;
-                    case "Tóxico": mat = new MaterialToxico(peso); break;
-                    default:
-                        mat = new Material(nomeMaterial, peso, toxico); // Caso seja um material desconhecido, cria um material genérico
-                        break;
+                    case "PAPEL": mat = new MaterialPapel(peso, toxico); break;
+                    case "PLÁSTICO": mat = new MaterialPlastico(peso, toxico); break;
+                    case "VIDRO": mat = new MaterialVidro(peso, toxico); break;
+                    case "ORGÂNICO": mat = new MaterialOrganico(peso, toxico); break;
+                    case "TÓXICO": mat = new MaterialToxico(peso, toxico); break;
+                    default:// Se chegar aqui, o dado no .txt está "sujo" ou é desconhecido
+                        throw new TipoMaterialInvalidoException("Tipo de material desconhecido no arquivo: " + nomeMaterial); // Se o tipo de material no arquivo for desconhecido, lançamos uma exceção personalizada para garantir que o sistema seja robusto e forneça feedback claro sobre o erro de entrada
                 }
                 if (mat != null) {
                     c.getHistoricoDescarte().add(mat); // Adiciona o material ao histórico do cidadão .txt
@@ -89,10 +91,14 @@ public class Main {
             }
             return c;
 
+        } catch (IOException e) {
+            System.out.println("Erro de leitura: " + e.getMessage());
+        } catch (TipoMaterialInvalidoException e) {
+            System.out.println("AVISO: " + e.getMessage() + "O histórico pode estar incompleto devido a dados inválidos.");
         } catch (Exception e) {
-            System.out.println("Erro ao carregar os dados: " + e.getMessage());
-            return null;
+            System.out.println("Erro inesperado: " + e.getMessage());
         }
+        return c;
     }
 
     public static void main(String[] args) {
@@ -153,11 +159,11 @@ public class Main {
                     Material materialSelecionado = null;
 
                     switch (tipoMaterial) {
-                        case 1: materialSelecionado = new MaterialPapel(pesoMaterial); break; 
-                        case 2: materialSelecionado = new MaterialPlastico(pesoMaterial); break;
-                        case 3: materialSelecionado = new MaterialVidro(pesoMaterial); break;
-                        case 4: materialSelecionado = new MaterialOrganico(pesoMaterial); break;
-                        case 5: materialSelecionado = new MaterialToxico(pesoMaterial); break;
+                        case 1: materialSelecionado = new MaterialPapel(pesoMaterial, false); break; 
+                        case 2: materialSelecionado = new MaterialPlastico(pesoMaterial, false); break;
+                        case 3: materialSelecionado = new MaterialVidro(pesoMaterial, false); break;
+                        case 4: materialSelecionado = new MaterialOrganico(pesoMaterial, false); break;
+                        case 5: materialSelecionado = new MaterialToxico(pesoMaterial, true); break;
                         default: 
                             System.out.println("Tipo inválido!");
                             break;

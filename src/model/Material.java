@@ -1,8 +1,13 @@
+/**
+ * Classe abstrata que serve como base para todos os resíduos do sistema.
+ * Não pode ser instanciada diretamente, garantindo que todo materialtenha um tipo específico e implemente sua própria lógica de pontuação.
+ */
+
 package src.model;
 
 import java.time.LocalDateTime;
 
-public class Material {
+public abstract class Material {
     // Declaração dos Atributos:
     protected String nome;
     protected double peso;
@@ -18,17 +23,7 @@ public class Material {
     }
 
     // Método de calcular pontos
-    public double calcularPontos() {
-        double pontosBase = this.peso * 10; 
-        
-        // se for orgânico, ganha bônus!
-        if (this.nome.equalsIgnoreCase("Orgânico")) {
-            return pontosBase * 2;
-        } else if (this.toxico) {
-            return pontosBase * 3; // materiais tóxicos valem mais pontos ainda, para incentivar a reciclagem correta e evitar descarte inadequado
-        }
-        return pontosBase;
-    }
+    public abstract double calcularPontos();
 
     // Getters e Setters (Encapsulamento)
     public String getNome() {

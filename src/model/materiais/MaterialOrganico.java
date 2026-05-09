@@ -4,8 +4,8 @@ import src.model.Material;
 
 public class MaterialOrganico extends Material {
 
-    public MaterialOrganico(double peso) {
-        super("Orgânico", peso, false);
+    public MaterialOrganico(double peso, boolean toxico) {
+        super("Orgânico", peso, toxico);
     }
     
     @Override
